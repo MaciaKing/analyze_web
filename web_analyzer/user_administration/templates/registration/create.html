@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <!-- Enlaces a tus archivos de estilo (CSS) o scripts (JavaScript) -->
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <!--<h1>Título Principal</h1>-->
+    </header>
+
+{% block content %}
+  <h2>Create account</h2>
+  <form method="post" action="{% url 'register' %}">
+    {% csrf_token %}  
+    <label>Username:</label>
+    <input type="username" name="username" required>
+    {{ form.username }}
+    <br>
+    <label>Email:</label>
+	<input type="email" name="email" required>
+    {{ form.email }}
+    <br>
+    <label>Password:</label>
+	<input type="password" name="password" required>
+	{{ form.password }}
+	<br>
+
+    <button type="submit">Registrarse</button>
+  </form>
+{% endblock %}
+
+ <!-- Pie de Página -->
+ <footer>
+	<p>&copy; 2023 Tu Nombre</p>
+</footer>
+
+<!-- Enlaces a tus archivos de scripts (JavaScript) 
+<script src="script.js"></script>-->
+</body>
+</html>
