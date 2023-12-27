@@ -16,7 +16,7 @@ def create(request):
 #@login_required(login_url='/example url you want redirect/') #redirect when user is not logged in
 @login_required
 def home(request):
-    pdb.set_trace()
+    #pdb.set_trace()
     return render(request, 'home.html')
 
 def login(request):

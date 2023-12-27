@@ -12,12 +12,14 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import environ
+import pdb
 
 env = environ.Env()
 environ.Env.read_env()
 
 # Load all .env vars
 VIRUS_TOTAL_API_KEY = env('VIRUS_TOTAL_API_KEY')
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user_administration'
+    'user_administration',
+    'cyberintelligence'
 ]
 AUTH_USER_MODEL = 'user_administration.WebUser'
 
