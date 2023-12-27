@@ -14,19 +14,16 @@ class VirusTotal():
         }
 
     def make_ip_query(self, ip):
-        url = self.base_url + self.base_ip_address_endpoint + ip
-        response = requests.get(url, headers=self.header)
-        if response.status_code == 200:
-            return json.loads(response.text)
-        else:
-            raise Exception("An ip was expected")     
+        return self.make_query(self.base_url + self.base_ip_address_endpoint + ip)   
         
     def make_domain_query(self, domain):
-        url = self.base_url + self.base_domain_endpoint + domain
+        return self.make_query(self.base_url + self.base_domain_endpoint + domain)
+
+    def make_query(self, url):
         response = requests.get(url, headers=self.header)
         if response.status_code == 200:
             return json.loads(response.text)
         else:
-            raise Exception("A domain was expected")
-
+            raise Exception("Bad request for this url", url)
+        
         
