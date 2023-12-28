@@ -19,7 +19,7 @@ environ.Env.read_env()
 
 # Load all .env vars
 VIRUS_TOTAL_API_KEY = env('VIRUS_TOTAL_API_KEY')
-
+ALIEN_VAULT_API_KEY = env('ALIEN_VAULT_API_KEY')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

@@ -13,9 +13,14 @@ class AlienVault():
         }
     
     def make_ip_query(self, ip):
-        response = requests.post(self.base_url + f"indicators/IPv4/{ip}/general", headers=self.header, data='')
-        return json.loads(response.text)
+        return self.make_query(self.base_url + f"indicators/IPv4/{ip}/general")
     
     def make_domain_query(self, domain):
-        response = requests.get(self.base_url + f"indicators/domain/{domain}/general", headers=self.header, data='')
-        return json.loads(response.text)
+        return self.make_query(self.base_url + f"indicators/domain/{domain}/general")
+    
+    def make_query(self, url):
+        response = requests.get(url, headers=self.header)
+        if response.status_code == 200:
+            return json.loads(response.text)
+        else:
+            raise Exception("Bad request for this url", url)
