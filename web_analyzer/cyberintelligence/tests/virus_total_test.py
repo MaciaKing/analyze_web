@@ -1,5 +1,5 @@
 from django.test import TestCase
-from cyberintelligence.virus_total import VirusTotal
+from cyberintelligence.classes.virus_total import VirusTotal
 from django.conf import settings
 
 class VirusTotalTestCase(TestCase):

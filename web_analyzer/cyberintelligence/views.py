@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from django.conf import settings
-from cyberintelligence.virus_total import VirusTotal
+from cyberintelligence.classes.virus_total import VirusTotal
 
 # Validate that the api is working
 def index(request):
