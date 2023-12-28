@@ -1,5 +1,4 @@
-import requests
-import json
+from cyberintelligence.classes.helper import Helper
 
 #https://otx.alienvault.com/api
 class AlienVault():
@@ -13,14 +12,7 @@ class AlienVault():
         }
     
     def make_ip_query(self, ip):
-        return self.make_query(self.base_url + f"indicators/IPv4/{ip}/general")
+        return Helper.make_query(self.base_url + f"indicators/IPv4/{ip}/general", self.header)
     
     def make_domain_query(self, domain):
-        return self.make_query(self.base_url + f"indicators/domain/{domain}/general")
-    
-    def make_query(self, url):
-        response = requests.get(url, headers=self.header)
-        if response.status_code == 200:
-            return json.loads(response.text)
-        else:
-            raise Exception("Bad request for this url", url)
+        return Helper.make_query(self.base_url + f"indicators/domain/{domain}/general", self.header)
