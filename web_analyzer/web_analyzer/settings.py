@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_administration',
-    'cyberintelligence'
+    'cyberintelligence',
+    'django_celery_results',
 ]
 AUTH_USER_MODEL = 'user_administration.WebUser'
 
@@ -81,7 +82,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'web_analyzer.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -95,6 +95,8 @@ DATABASES = {
         'PORT': '5432',                # Puerto de PostgreSQL
     }
 }
+
+CELERY_RESULT_BACKEND = 'django-db'
 
 
 # Password validation
