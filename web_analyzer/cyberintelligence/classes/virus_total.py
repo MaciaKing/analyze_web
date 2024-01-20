@@ -16,6 +16,8 @@ class VirusTotal():
         self.header = {
             "x-apikey": self.api_key
         }
+        self.MAX_REQUEST_PER_DAY = 500
+        self.MAX_REQUEST_PER_MINUTE = 4
 
     def make_ip_query(self, ip):
         """ Make an ip query to Virus Total api.
@@ -42,3 +44,19 @@ class VirusTotal():
             - Return a 'dict' (json) object.
         """
         return Helper.make_query(self.base_url + self.base_domain_endpoint + domain, self.header)
+    
+    def get_MAX_REQUEST_PER_DAY(self):
+        return self.MAX_REQUEST_PER_DAY
+    
+    def get_MAX_REQUEST_PER_MINUTE(self):
+        return self.MAX_REQUEST_PER_MINUTE
+    
+    def get_waiting_time_between_requests(self):
+        """ get_waiting_time_between_requests
+        Functionality:
+            - Obtain the minimum waiting time to make requests in the same minute.
+        
+        Returns:
+            - Return an 'integer' object. The result is in seconds.
+        """
+        return int(60/self.MAX_REQUEST_PER_MINUTE)
