@@ -1,5 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 import os
+from datetime import timedelta
 from celery import Celery
 from celery.schedules import crontab
 
@@ -13,7 +14,8 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'extract_alien_vault_task': {
         'task': 'cyberintelligence.tasks.extract_alien_vault',  # Cambia 'ruta.a.tu.extract_alien_vault' a la ruta correcta de tu tarea
-        'schedule': crontab(minute='*/2'),  # Ejecutar cada 2 minutos
+        #'schedule': crontab(minute='*/2'),  # Ejecutar cada 2 minutos
+        'schedule': timedelta(seconds=2),
         'args': ('periooodicaaaaa',),  # Argumentos de la tarea
     } #,
     #'extract_virus_total_task': {

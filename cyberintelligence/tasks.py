@@ -9,8 +9,9 @@ import pdb
 
 @shared_task
 def extract_alien_vault(file):
-    av = AlienVault(settings.ALIEN_VAULT_API_KEY)
-    domains = read_file(file)
+    print(f"****************  {file}")
+    #av = AlienVault(settings.ALIEN_VAULT_API_KEY)
+    #domains = read_file(file)
     # c= settings.last_line_read_alien_vault
     # for i in c..c + av.max_operations
     #   av.read

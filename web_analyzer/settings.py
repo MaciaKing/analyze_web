@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import environ
-import pdb
+import os
 
 env = environ.Env()
 environ.Env.read_env()
@@ -84,14 +84,13 @@ WSGI_APPLICATION = 'web_analyzer.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'web_analyzer',          # Nombre de la base de datos que creaste
-        'USER': 'maciasalvasalva',      # Usuario de la base de datos
-        #'PASSWORD': 'mypassword',      # Contraseña del usuario de la base de datos
-        'HOST': 'localhost',           # Host de la base de datos (puede ser localhost o una dirección IP)
+        'USER': os.environ.get('POSTGRES_USER'),      # Usuario de la base de datos
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),      # Contraseña del usuario de la base de datos
+        'HOST': 'db',           # Host de la base de datos (puede ser localhost o una dirección IP)
         'PORT': '5432',                # Puerto de PostgreSQL
     }
 }
