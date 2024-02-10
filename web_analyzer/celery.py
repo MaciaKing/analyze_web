@@ -6,7 +6,8 @@ from celery.schedules import crontab
 
 # Setup celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web_analyzer.settings')
-app = Celery('web_analyzer')
+app = Celery('web_analyzer',
+             broker_url = 'amqp://guest:guest@rabbitmq:5672//:')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 

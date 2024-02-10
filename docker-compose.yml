@@ -2,6 +2,7 @@ version: '3.7'
 services:
 
   web:
+    container_name: 'api_and_celery'
     build: .
     command: sh -c "/app/web_services_init.sh && tail -f /dev/null"
     environment:
@@ -16,6 +17,7 @@ services:
 
   db:
     image: postgres:12
+    container_name: 'database'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -28,3 +30,15 @@ services:
     volumes:
       - /var/lib/postgresql/data
       - .docker_compose_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    #volumes:
+    #    - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+    #    - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    #networks:
+    #     - rabbitmq_go_net
