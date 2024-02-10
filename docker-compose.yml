@@ -12,6 +12,7 @@ services:
       - '8000:8000'
     depends_on:
       - db
+      - rabbitmq
     volumes:
       - .docker_compose_scripts/web_services_init.sh:/app/web_services_init.sh
 
