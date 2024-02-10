@@ -3,7 +3,7 @@ services:
 
   web:
     build: .
-    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "/app/web_services_init.sh"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -11,6 +11,8 @@ services:
       - '8000:8000'
     depends_on:
       - db
+    volumes:
+      - .docker_compose_scripts/web_services_init.sh:/app/web_services_init.sh
 
   db:
     image: postgres:12
@@ -25,4 +27,4 @@ services:
       - '5432:5432'
     volumes:
       - /var/lib/postgresql/data
-      - .init.sql:/docker-entrypoint-initdb.d/init.sql
+      - .docker_compose_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql

@@ -87,11 +87,11 @@ WSGI_APPLICATION = 'web_analyzer.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'web_analyzer',          # Nombre de la base de datos que creaste
-        'USER': os.environ.get('POSTGRES_USER'),      # Usuario de la base de datos
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),      # Contraseña del usuario de la base de datos
-        'HOST': 'db',           # Host de la base de datos (puede ser localhost o una dirección IP)
-        'PORT': '5432',                # Puerto de PostgreSQL
+        'NAME': 'web_analyzer',
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('HOST_DATABASE'),
+        'PORT': '5432',                
     }
 }
 
