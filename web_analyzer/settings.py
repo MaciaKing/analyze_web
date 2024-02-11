@@ -90,8 +90,7 @@ DATABASES = {
         'NAME': 'web_analyzer',
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        #'HOST': os.environ.get('HOST_DATABASE'), 
-        'HOST': 'database',
+        'HOST': os.environ.get('HOST_DATABASE'), 
         'PORT': '5432',                
     }
 }

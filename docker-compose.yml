@@ -8,6 +8,8 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - HOST_DATABASE=database
+      - RABBITMQ_SERVER=rabbitmq
     ports:
       - '8000:8000'
     depends_on:

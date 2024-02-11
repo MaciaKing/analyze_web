@@ -3,11 +3,12 @@ import os
 from datetime import timedelta
 from celery import Celery
 from celery.schedules import crontab
+import pdb
 
 # Setup celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web_analyzer.settings')
 app = Celery('web_analyzer',
-             broker_url = 'amqp://guest:guest@rabbitmq:5672/')
+             broker_url = f"amqp://guest:guest@{os.environ.get('RABBITMQ_SERVER')}:5672//")
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
