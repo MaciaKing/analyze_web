@@ -4,7 +4,7 @@ services:
   web:
     container_name: 'api_and_celery'
     build: .
-    command: sh -c "/app/web_services_init.sh && tail -f /dev/null"
+    command: sh -c "/app/.docker_compose_scripts/web_services_init.sh && tail -f /dev/null"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -13,10 +13,10 @@ services:
     ports:
       - '8000:8000'
     depends_on:
-      - db
-      - rabbitmq
-    volumes:
-      - .docker_compose_scripts/web_services_init.sh:/app/web_services_init.sh
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   db:
     image: postgres:12
@@ -33,13 +33,23 @@ services:
     volumes:
       - /var/lib/postgresql/data
       - .docker_compose_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
-    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 1
+
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: 'rabbitmq'
     ports:
         - 5672:5672
         - 15672:15672
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 1
     #volumes:
     #    - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
     #    - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
