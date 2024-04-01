@@ -88,7 +88,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'web_analyzer',
-        'USER': os.environ.get('POSTGRES_USER'),
+        'USER': os.environ.get('PGUSER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': os.environ.get('HOST_DATABASE'), 
         'PORT': '5432',                
