@@ -5,11 +5,8 @@ services:
     container_name: 'api_and_celery'
     build: .
     command: sh -c "/app/.docker_compose_scripts/web_services_init.sh && tail -f /dev/null"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - HOST_DATABASE=database
-      - RABBITMQ_SERVER=rabbitmq
+    env_file:
+      - ./web_analyzer/.env
     ports:
       - '8000:8000'
     depends_on:
@@ -21,12 +18,8 @@ services:
   db:
     image: postgres:12-alpine
     container_name: 'database'
-    environment:
-      - PGUSER=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      # Creates a defaulte database named 'web_analyzer'
-      - POSTGRES_DB=web_analyzer
+    env_file:
+      - ./web_analyzer/.env
     ports:
       - '5432:5432'
     volumes:
