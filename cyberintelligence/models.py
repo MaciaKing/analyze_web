@@ -5,6 +5,7 @@ from django.db.models.signals import post_migrate # for the first insert
 class LastLineRead(models.Model):
     last_line_read_alien_vault = models.IntegerField(default=0)
     last_line_read_virus_total = models.IntegerField(default=0)
+    last_line_read_pulsedive = models.IntegerField(default=0)
 
     def get_model():
         return LastLineRead.objects.first()
