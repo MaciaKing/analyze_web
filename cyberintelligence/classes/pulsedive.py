@@ -1,5 +1,4 @@
 import os
-import pdb
 from cyberintelligence.classes.helper import Helper
 
 class Pulsedive():
