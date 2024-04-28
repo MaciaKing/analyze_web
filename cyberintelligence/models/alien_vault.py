@@ -1,4 +1,4 @@
-from cyberintelligence.classes.helper import Helper
+from .helper import Helper
 
 #https://otx.alienvault.com/api
 class AlienVault():

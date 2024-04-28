@@ -1,7 +1,7 @@
 import os
 from django.db import models
-from cyberintelligence.classes.helper import Helper
-from cyberintelligence.models import LastLineRead
+from .helper import Helper
+from .last_line_read import LastLineRead
 
 class Pulsedive(models.Model):
     '''

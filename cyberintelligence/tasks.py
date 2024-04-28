@@ -1,10 +1,11 @@
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from django.conf import settings
-from cyberintelligence.classes.virus_total import VirusTotal
-from cyberintelligence.classes.alien_vault import AlienVault
-from cyberintelligence.classes.pulsedive import Pulsedive
-from cyberintelligence.models import LastLineRead, DataExtracted
+from .models.virus_total import VirusTotal
+from .models.alien_vault import AlienVault
+from .models.pulsedive import Pulsedive
+from .models.last_line_read import LastLineRead
+from .models.data_extracted import DataExtracted
 from time import sleep
 import os
 import pdb

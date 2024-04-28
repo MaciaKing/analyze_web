@@ -1,5 +1,5 @@
 from django.test import TestCase
-from cyberintelligence.classes.pulsedive import Pulsedive
+from ..models.pulsedive import Pulsedive
 from django.conf import settings
 
 class PulsediveTestCase(TestCase):

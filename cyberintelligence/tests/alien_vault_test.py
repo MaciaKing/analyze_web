@@ -1,5 +1,5 @@
 from django.test import TestCase
-from cyberintelligence.classes.alien_vault import AlienVault
+from ..models.alien_vault import AlienVault
 from django.conf import settings
 
 class AlienVaultTestCase(TestCase):

@@ -1,4 +1,4 @@
-from cyberintelligence.classes.helper import Helper
+from .helper import Helper
 
 class VirusTotal():
     """ This class is to connect my code to virus total api.

@@ -1,8 +1,8 @@
 # test_tasks.py
 from django.test import TestCase
 from django.conf import settings
-from cyberintelligence.classes.virus_total import VirusTotal
-from cyberintelligence.classes.alien_vault import AlienVault
+from ..models.virus_total import VirusTotal
+from ..models.alien_vault import AlienVault
 from cyberintelligence.tasks import extract_alien_vault, extract_virus_total, save_data, read_file
 from cyberintelligence.models import LastLineRead, DataExtracted
 
