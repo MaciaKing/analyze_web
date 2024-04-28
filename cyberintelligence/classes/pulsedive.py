@@ -1,7 +1,9 @@
 import os
+from django.db import models
 from cyberintelligence.classes.helper import Helper
+from cyberintelligence.models import LastLineRead
 
-class Pulsedive():
+class Pulsedive(models.Model):
     '''
     Rate limits: https://pulsedive.com/about/api
     1 request /second
@@ -18,9 +20,8 @@ class Pulsedive():
         self.pretty="pretty=1"
         self.endpoint="/info.php?"
         self.base_url="https://pulsedive.com/api"
-        self.request_per_day = 50
-        self.request_per_month = 500
-
+        self.MAX_REQUEST_PER_DAY = 50
+        self.MAX_REQUEST_PER_MONTH = 500
     
     def query(self, domain):
         url = self.base_url + self.endpoint + "indicator=" + domain + "&" + self.pretty + "&" + "key=" + self.api_key

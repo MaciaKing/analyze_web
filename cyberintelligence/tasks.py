@@ -3,13 +3,26 @@ from celery import shared_task
 from django.conf import settings
 from cyberintelligence.classes.virus_total import VirusTotal
 from cyberintelligence.classes.alien_vault import AlienVault
+from cyberintelligence.classes.pulsedive import Pulsedive
 from cyberintelligence.models import LastLineRead, DataExtracted
 from time import sleep
+import os
 import pdb
+
+def extract_pulsedive(file):
+    #import requests
+    pd = Pulsedive()
+    pdb.set_trace()
+
+    last_line_read = LastLineRead.objects.first().last_line_read_pulsedive
+    domains = read_file(file)
+
+    actual_requests = 0
+    while (pd.MAX_REQUEST_PER_DAY < actual_requests):
+        None
 
 @shared_task
 def extract_alien_vault(file):
-    print(f"****************  {file}")
     #av = AlienVault(settings.ALIEN_VAULT_API_KEY)
     #domains = read_file(file)
     # c= settings.last_line_read_alien_vault
