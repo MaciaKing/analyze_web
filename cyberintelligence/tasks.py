@@ -48,7 +48,7 @@ def extract_pulsedive(file):
             response = pd.query(domains[last_line_read]) # Return dict
         except:
             error_in_petition=True
-        save_data("Pulsedive", domains[last_line_read], response, is_white_list, (last_line_read + 1))
+        save_data("Pulsedive", domains[last_line_read], response, white_list, (last_line_read + 1))
 
         # Pulsedive control
         actual_requests += 1
