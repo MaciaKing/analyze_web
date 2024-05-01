@@ -36,6 +36,7 @@ def extract_pulsedive(file):
     error_in_petition = False # If in the query there are some kind of error then stop
     actual_requests = 0
     while pd.can_make_query(actual_requests) and not error_in_petition:
+        print(f"Actual request = {actual_requests}")
         last_line_read = LastLineRead.objects.get(id=1).last_line_read_pulsedive
         try:
             response = pd.query(domains[last_line_read]) # Return dict
