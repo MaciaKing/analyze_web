@@ -2,7 +2,7 @@ version: '3.7'
 services:
 
   web:
-    container_name: 'api_and_celery'
+    container_name: 'api'
     build: .
     command: sh -c "/app/.docker_compose_scripts/web_services_init.sh && tail -f /dev/null"
     env_file:
@@ -14,6 +14,24 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+
+  celery_worker:
+    container_name: 'celery_worker'
+    build: .
+    command: sh -c "celery -A web_analyzer worker -l info"
+    env_file:
+      - ./web_analyzer/.env
+    depends_on:
+      - web
+
+  celery_beat:
+    container_name: 'celery_beat'
+    build: .
+    command: sh -c "celery -A web_analyzer beat -l info"
+    env_file:
+      - ./web_analyzer/.env
+    depends_on:
+      - celery_worker
 
   db:
     image: postgres:12-alpine

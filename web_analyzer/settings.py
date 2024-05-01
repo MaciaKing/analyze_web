@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_administration',
     'cyberintelligence',
+    #'django_celery_results',
 ]
 AUTH_USER_MODEL = 'user_administration.WebUser'
 
@@ -94,8 +95,7 @@ DATABASES = {
     }
 }
 
-
-
+#CELERY_RESULT_BACKEND = 'django-db'
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
