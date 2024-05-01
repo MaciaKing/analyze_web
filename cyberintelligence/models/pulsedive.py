@@ -1,4 +1,5 @@
 import os
+import datetime
 from django.db import models
 from .helper import Helper
 from .last_line_read import LastLineRead
@@ -15,14 +16,36 @@ class Pulsedive(models.Model):
 
     50 Explore results
     '''
-    def __init__(self, api_key=os.getenv('PULSEDIVE_API_KEY')):
-        self.api_key = api_key
-        self.pretty="pretty=1"
-        self.endpoint="/info.php?"
-        self.base_url="https://pulsedive.com/api"
-        self.MAX_REQUEST_PER_DAY = 50
-        self.MAX_REQUEST_PER_MONTH = 500
-    
+    # Save to database
+    last_day_used = models.DateField() # datetime.datetime.now()
+    total_querys_on_month = models.IntegerField(default=0)
+
+    # Api uses
+    api_key = os.getenv('PULSEDIVE_API_KEY')
+    pretty = "pretty=1"
+    endpoint = "/info.php?"
+    base_url = "https://pulsedive.com/api"
+    MAX_REQUEST_PER_DAY = 50
+    MAX_REQUEST_PER_MONTH = 500
+
+    @classmethod
+    def create(cls, api_key=os.getenv('PULSEDIVE_API_KEY')):
+        return cls(api_key=api_key)
+
     def query(self, domain):
         url = self.base_url + self.endpoint + "indicator=" + domain + "&" + self.pretty + "&" + "key=" + self.api_key
         return Helper.make_query(url, {})
+
+    def can_make_query(self, actual_number_of_requests):
+        # If today is the same month of last query
+        if datetime.datetime.now().month == Pulsedive.objects.first().last_day_used.month:
+            # Check if the MAX_REQUEST_PER_DAY limit is passed
+            if self.MAX_REQUEST_PER_DAY <= actual_number_of_requests:
+                return False
+            # Check if the total_querys_on_month is passed
+            if self.MAX_REQUEST_PER_DAY <= self.total_querys_on_month:
+                return False
+        # The month is different, so you can make querys
+        # or you have not pass the limit and you can make querys.
+        return True
+        
