@@ -8,6 +8,8 @@ from .models.last_line_read import LastLineRead
 from .models.data_extracted import DataExtracted
 from time import sleep
 import datetime
+import pdb
+
 
 @shared_task(soft_time_limit=None)
 def extract_pulsedive(file):
@@ -24,6 +26,10 @@ def extract_pulsedive(file):
     Returns:
         - None.
     """
+    # Detect if the file is whitelisted
+    white_list = is_white_list(file)
+    pdb.set_trace()
+
     pd = Pulsedive.objects.first()
     # if the first object does not exist, create a new one
     if pd is None:
@@ -42,7 +48,7 @@ def extract_pulsedive(file):
             response = pd.query(domains[last_line_read]) # Return dict
         except:
             error_in_petition=True
-        save_data("Pulsedive", domains[last_line_read], response, False, (last_line_read + 1))
+        save_data("Pulsedive", domains[last_line_read], response, is_white_list, (last_line_read + 1))
 
         # Pulsedive control
         actual_requests += 1
@@ -75,6 +81,8 @@ def extract_virus_total(file):
     Returns:
         - None.
     """
+    white_list = is_white_list()
+
     vt = VirusTotal(settings.VIRUS_TOTAL_API_KEY)
     wait_time_between_requests = vt.get_waiting_time_between_requests()
     max_request_per_day = vt.get_MAX_REQUEST_PER_DAY()
@@ -89,7 +97,7 @@ def extract_virus_total(file):
             response = vt.make_domain_query(domains[last_line_read_vt])
         except:
             error_in_petition = True # Excess of daily queries exceeded 
-        save_data("Virus Total", domains[last_line_read_vt], response, False, last_line_read_vt)
+        save_data("Virus Total", domains[last_line_read_vt], response, white_list, last_line_read_vt)
         max_request_per_day = max_request_per_day - 1 # control the petitions
         last_line_read_vt = last_line_read_vt + 1 # get the next domain/ip 
         sleep(wait_time_between_requests) # Waiting time between querys
@@ -117,9 +125,7 @@ def save_data(extracted_from, domain, data_extracted, white_list, last_line_read
     if extracted_from == "Virus Total":
         LastLineRead.objects.filter(id=1).update(last_line_read_virus_total=last_line_read) # Only have the first objcet for save the info
     elif extracted_from == "Pulsedive": 
-        #pdb.set_trace()
         LastLineRead.objects.filter(id=1).update(last_line_read_pulsedive=last_line_read) # Only have the first objcet for save the info
-
 
 
 def read_file(file):
@@ -136,3 +142,20 @@ def read_file(file):
     with open(file) as f:
         lines = [line.rstrip() for line in f] # rstrip() ignores the final '\n' character
     return lines
+
+
+def is_white_list(to_detect):
+    """ Read a txt file.
+    Params:
+        - to_detect (string). Represents the file file_path .
+
+    Functionality:
+        - Return True if the filename contain whitelist.
+    
+    Returns:
+        - (Boolean) Return True if the filename contain whitelist.
+    """
+    if "whitelist" in to_detect:
+        return True
+    return False
+    
