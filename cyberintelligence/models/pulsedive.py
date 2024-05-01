@@ -48,4 +48,7 @@ class Pulsedive(models.Model):
         # The month is different, so you can make querys
         # or you have not pass the limit and you can make querys.
         return True
-        
+    
+    def add_one_to_total_querys_on_month(self):
+        self.total_querys_on_month = self.total_querys_on_month + 1
+        self.save()
