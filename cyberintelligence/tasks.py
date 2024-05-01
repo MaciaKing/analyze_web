@@ -7,20 +7,47 @@ from .models.pulsedive import Pulsedive
 from .models.last_line_read import LastLineRead
 from .models.data_extracted import DataExtracted
 from time import sleep
-import os
-import pdb
+import datetime
 
+@shared_task(soft_time_limit=None)
 def extract_pulsedive(file):
-    #import requests
-    pd = Pulsedive()
-    pdb.set_trace()
+    """ Save extracted data to database.
+    Params:
+        - file (string). Is the path to the file. Represents a file with a 
+        domains to be analyzed.
 
-    last_line_read = LastLineRead.objects.first().last_line_read_pulsedive
+    Functionality:
+        - This function is to extract data from the Pulsedive API.
+        It reads a file where there are different domains to be analyzed and 
+        saves the results obtained by the API in a local database.
+
+    Returns:
+        - None.
+    """
+    pd = Pulsedive.objects.first()
+    # if the first object does not exist, create a new one
+    if pd is None:
+        pd = Pulsedive()
+    pd.last_day_used = datetime.datetime.now() # Set last day used to today
+    pd.save()
+
     domains = read_file(file)
 
+    error_in_petition = False # If in the query there are some kind of error then stop
     actual_requests = 0
-    while (pd.MAX_REQUEST_PER_DAY < actual_requests):
-        None
+    while pd.can_make_query(actual_requests) and not error_in_petition:
+        last_line_read = LastLineRead.objects.get(id=1).last_line_read_pulsedive
+        try:
+            response = pd.query(domains[last_line_read]) # Return dict
+        except:
+            error_in_petition=True
+        save_data("Pulsedive", domains[last_line_read], response, False, (last_line_read + 1))
+
+        # Pulsedive control
+        actual_requests += 1
+        pd.add_one_to_total_querys_on_month()
+        sleep(pd.TIME_BETWEEN_REQUESTS)
+    
 
 @shared_task
 def extract_alien_vault(file):
@@ -67,14 +94,14 @@ def extract_virus_total(file):
         sleep(wait_time_between_requests) # Waiting time between querys
 
 
-def save_data(extracted_from, domain, data_extracted, white_list, last_line_read_vt):
+def save_data(extracted_from, domain, data_extracted, white_list, last_line_read):
     """ Save extracted data to database.
     Params:
         - extracted_from (string). Where the data is extracted from.
         - domain (string). The domain name.
         - data_extracted (json). Is the information extracted from extracted_from.
         - white_list (boolean). If the domain is white list or not.
-        - last_line_read_vt (integer). Save the last line read of the file.
+        - last_line_read (integer). Save the last line read of the file.
 
     Functionality:
         - The functionality is to save data extracted from different apis. 
@@ -86,7 +113,11 @@ def save_data(extracted_from, domain, data_extracted, white_list, last_line_read
         - None.
     """
     DataExtracted( extracted_from, domain, data_extracted, white_list ).save()
-    LastLineRead.objects.filter(id=1).update(last_line_read_virus_total=last_line_read_vt) # Only have the first objcet for save the info
+    if extracted_from == "Virus Total":
+        LastLineRead.objects.filter(id=1).update(last_line_read_virus_total=last_line_read) # Only have the first objcet for save the info
+    elif extracted_from == "Pulsedive": 
+        #pdb.set_trace()
+        LastLineRead.objects.filter(id=1).update(last_line_read_pulsedive=last_line_read) # Only have the first objcet for save the info
 
 
 
