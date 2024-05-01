@@ -27,16 +27,37 @@ class Pulsedive(models.Model):
     base_url = "https://pulsedive.com/api"
     MAX_REQUEST_PER_DAY = 50
     MAX_REQUEST_PER_MONTH = 500
+    TIME_BETWEEN_REQUESTS = 1 # 1 second between requests
 
     @classmethod
     def create(cls, api_key=os.getenv('PULSEDIVE_API_KEY')):
         return cls(api_key=api_key)
 
     def query(self, domain):
+        """ Make a domain query to Pulsedive api.
+        Params:
+            - domain (string). Represents the domain to be analyzed.
+
+        Functionality:
+            - Creates a valid request for the Pulsedive endpoint.
+        
+        Returns:
+            - Return a 'dict' (json) object.
+        """
         url = self.base_url + self.endpoint + "indicator=" + domain + "&" + self.pretty + "&" + "key=" + self.api_key
         return Helper.make_query(url, {})
 
     def can_make_query(self, actual_number_of_requests):
+        """
+        Params:
+            - actual_number_of_requests (integer). Represents the querys made in the same day.
+
+        Functionality:
+            - Check if the query can be made to pulsedive.
+        
+        Returns:
+            - Return True if query can be done.
+        """
         # If today is the same month of last query
         if datetime.datetime.now().month == Pulsedive.objects.first().last_day_used.month:
             # Check if the MAX_REQUEST_PER_DAY limit is passed
