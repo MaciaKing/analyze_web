@@ -8,6 +8,7 @@ from .models.last_line_read import LastLineRead
 from .models.data_extracted import DataExtracted
 from time import sleep
 import datetime
+import pdb
 
 
 @shared_task(soft_time_limit=None)
@@ -25,6 +26,7 @@ def extract_pulsedive(file):
     Returns:
         - None.
     """
+    #pdb.set_trace()
     # Detect if the file is whitelisted
     white_list = is_white_list(file)
 
@@ -119,7 +121,7 @@ def save_data(extracted_from, domain, data_extracted, white_list, last_line_read
     Returns:
         - None.
     """
-    DataExtracted( extracted_from, domain, data_extracted, white_list ).save()
+    DataExtracted( extracted_from=extracted_from, domain=domain, data_extracted=data_extracted, white_list=white_list ).save()
     if extracted_from == "Virus Total":
         LastLineRead.objects.filter(id=1).update(last_line_read_virus_total=last_line_read) # Only have the first objcet for save the info
     elif extracted_from == "Pulsedive": 
