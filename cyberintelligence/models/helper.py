@@ -20,7 +20,7 @@ class Helper:
             - Returns an error because the url is malformed.
         """
         response = requests.get(url, headers=header)
-        if response.status_code == 200:
+        if response.status_code == 200 or 404:
             return json.loads(response.text)
         else:
             raise Exception("Bad request for this url", url)
