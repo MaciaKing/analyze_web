@@ -8,7 +8,6 @@ from .models.last_line_read import LastLineRead
 from .models.data_extracted import DataExtracted
 from time import sleep
 import datetime
-import pdb
 
 
 @shared_task(soft_time_limit=None)
@@ -26,7 +25,6 @@ def extract_pulsedive(file):
     Returns:
         - None.
     """
-    #pdb.set_trace()
     # Detect if the file is whitelisted
     white_list = is_white_list(file)
 
