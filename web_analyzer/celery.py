@@ -20,12 +20,12 @@ path_whitelist_domain = str(settings.BASE_DIR) + "/cyberintelligence/data_to_ext
 app.conf.beat_schedule = {
     'extract_pulsedive_task': {
         'task': 'cyberintelligence.tasks.extract_pulsedive',  # Cambia 'ruta.a.tu.extract_virus_total' a la ruta correcta de tu tarea
-        'schedule': crontab(hour=21, minute=36),  # ejecutar todos los días a las 22:00
+        'schedule': crontab(hour=20, minute=56),  # ejecutar todos los días a las 22:00
         'args': (path_blacklist_domain,),
     },
     'extract_virus_total_task': {
         'task': 'cyberintelligence.tasks.extract_virus_total',  # Cambia 'ruta.a.tu.extract_virus_total' a la ruta correcta de tu tarea
-        'schedule': crontab(hour=22, minute=00),  # ejecutar todos los días a las 22:00
+        'schedule': crontab(hour=21, minute=50),  # ejecutar todos los días a las 22:00
         'args': (path_blacklist_domain,),
     },
 }
