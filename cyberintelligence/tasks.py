@@ -8,7 +8,6 @@ from .models.last_line_read import LastLineRead
 from .models.data_extracted import DataExtracted
 from time import sleep
 import datetime
-import pdb
 
 
 @shared_task(soft_time_limit=None)
@@ -28,7 +27,6 @@ def extract_pulsedive(file):
     """
     # Detect if the file is whitelisted
     white_list = is_white_list(file)
-    pdb.set_trace()
 
     pd = Pulsedive.objects.first()
     # if the first object does not exist, create a new one
@@ -81,7 +79,7 @@ def extract_virus_total(file):
     Returns:
         - None.
     """
-    white_list = is_white_list()
+    white_list = is_white_list(file)
 
     vt = VirusTotal(settings.VIRUS_TOTAL_API_KEY)
     wait_time_between_requests = vt.get_waiting_time_between_requests()
